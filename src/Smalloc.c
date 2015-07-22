@@ -47,14 +47,13 @@ void *_safeMalloc(int size,int lineNumber, char *fileName){
  *  @brief Copy repetitive patterns into memory
  *  @arg timesToCopy The number of times to copy
  *  @arg pattern     The pattern to copy to the destination
- *  @arg pointer     The destination to point to
+ *  @arg pointer     The destination to point to(in this case, footerptr or headerptr)
  */
 void patternRepeat(int timesToCopy, char *pattern, char *pointer){
   char *temp;
   int i;
   size_t slen = strlen(pattern);
   
- // printf("%d\n",patternLength);
   for ( i=0,temp = pointer ; i<timesToCopy; ++i, temp+=slen){
     memcpy(temp, pattern, slen);
     
@@ -77,19 +76,20 @@ void patternCheck(char *pointer){
   
   checkingValue =strcmp(memory,pointer);
   
-  
-  if(checkingValue!=0){
-    for(i=0;i<HEADER_SIZE;i++){
+  if (checkingValue!=0){
+    for(i=0;i<HEADER_SIZE;  i++){
       checkingValue=strncmp(memory,pointer,i);
+        printf("%d",i);
+  
+     
       if(checkingValue!=0) 
         break;
     }
   }
   
-  /* 
-  printf("no%s",memory);
-  printf("no%d",i); */
-	
+  printf("%d",i);
+  
+  
 	
 	
 }
