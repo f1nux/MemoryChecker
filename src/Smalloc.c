@@ -4,12 +4,10 @@
 #include <string.h>
 #include "CException.h"
 #include "Smalloc.h"
-
+#include "AllocationPool.h"
 #include "ErrorObject.h"
 
-
-
-void *_safeMalloc(int size,int lineNumber, char *fileName){
+void *_safeMalloc(int size, int lineNumber, char *fileName){
   void *headerPtr,
        *dataPtr,
        *footerPtr;
@@ -19,12 +17,11 @@ void *_safeMalloc(int size,int lineNumber, char *fileName){
   if(size==0)
     return NULL;
   else if(size>DATA_SIZE){
-        sprintf(message,"Unable to create (%d) space at line %d from file %s\n",size,lineNumber,fileName);
-        throwError(message, ERR_EXCEED_DATA_SIZE);
-    } 
-    
-       
-       
+    printf(message,"Unable to create (%d) space at line %d from file %s\n",size,lineNumber,fileName);
+   // throwError(message, ERR_EXCEED_DATA_SIZE);
+   //caution : this wont work for certain reason, hence, marked
+  } 
+
   void *space = malloc(sizeof(HEADER_SIZE+size+FOOTER_SIZE));
   
   headerPtr   = space;
@@ -38,10 +35,7 @@ void *_safeMalloc(int size,int lineNumber, char *fileName){
 
   printf("foot :%d\n",lineNumber);
   printf("foot :%s\n",fileName);
-  
-  return dataPtr;
 }
-
 
 /**
  *  @brief Copy repetitive patterns into memory
@@ -53,17 +47,14 @@ void patternRepeat(int timesToCopy, char *pattern, char *pointer){
   char *temp;
   int i;
   size_t slen = strlen(pattern);
-  
+
   for ( i=0,temp = pointer ; i<timesToCopy; ++i, temp+=slen){
     memcpy(temp, pattern, slen);
-    
+
     if((temp+slen)>pointer+FOOTER_SIZE) break;
   }
   *temp = '\0';
-
-  
 }
-
 
 /**
  *  @brief check repetitive patterns in the memory
@@ -87,9 +78,19 @@ void patternCheck(char *pointer){
     }
   }
   
-  printf("%d",i);
-  
-  
-	
-	
+}
+
+/**
+ *  link allocation and memory description
+ */
+void listAdd(Allocation *alloc, memoryDescription *newMemDesc){
+  if(alloc->head==NULL && alloc->tail==NULL){
+    alloc->head = newMemDesc;
+    alloc->tail = newMemDesc;
+  }
+  else{
+    alloc->tail->next = newMemDesc;
+    alloc->tail = newMemDesc;
+  }
+  alloc->noOfLinkedDesc++;
 }

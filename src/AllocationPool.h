@@ -1,17 +1,22 @@
 #ifndef AllocationPool_H
 #define AllocationPool_H
 
-#include "Smalloc.h"
-
-typedef struct allocation_t Allocation;
-struct allocation_t{
-  int lineNumber;
+typedef struct memoryDescription_t memoryDescription;
+struct memoryDescription_t{
+  memoryDescription *next;
+  int lineNo;
   int lengthOfSpace;
-  char fileName;
-  Space *memory;
-  Allocation *next;
+  char *fileNameMemory;
+  void *memoryStor;
 };
 
-Allocation *createAllocationPool(int lineNumber, int lengthOfSpace, int fileName);
+typedef struct{
+  memoryDescription *head;
+  memoryDescription *tail;
+  int noOfLinkedDesc;
+} Allocation;
+
+Allocation *createAllocationPool();
+memoryDescription *createMemoryDescription(int lineNo, int lengthOfSpace, char *fileNameMemory);
 
 #endif // AllocationPool_H

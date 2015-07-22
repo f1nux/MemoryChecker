@@ -114,5 +114,22 @@ void xtest_safeMalloc_check_header_footer_pattern(){
   TEST_ASSERT_EQUAL_HEX('Z', *(memory+18));
   TEST_ASSERT_EQUAL_HEX('a', *(memory+19));
   
-    
 } 
+
+
+void test_patternCheck(){
+  
+    char *memory = malloc(20);
+  patternRepeat(5,"xyZa",memory);
+  
+  patternCheck(memory);
+  
+  
+  
+  
+}
+
+
+
+
+

@@ -221,6 +221,30 @@ void xtest_safeMalloc_check_header_footer_pattern(){
 
 
 
+}
+
+
+
+
+
+void test_patternCheck(){
+
+
+
+    char *memory = malloc(20);
+
+  patternRepeat(5,"xyZa",memory);
+
+
+
+  patternCheck(memory);
+
+
+
+
+
+
+
 
 
 }
